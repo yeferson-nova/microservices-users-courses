@@ -1,4 +1,4 @@
-package com.ynova.msvc.usuarios.model.entity;
+package com.ynova.msvc.usuarios.msvc_usuarios.model.entity;
 
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
