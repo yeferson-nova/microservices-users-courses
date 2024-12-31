@@ -23,38 +23,39 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping({"/usuarios","/"})
-    public List<Usuario> listar(){
+    @GetMapping({ "/usuarios", "/" })
+    public List<Usuario> listar() {
         return usuarioService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> buscar(@PathVariable Long id){
+    public ResponseEntity<?> buscar(@PathVariable Long id) {
         Optional<Usuario> usuarioOptional = usuarioService.findById(id);
-        if (usuarioOptional.isPresent()){
+        if (usuarioOptional.isPresent()) {
             return ResponseEntity.ok().body(usuarioOptional.get());
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     /*
+     * @PostMapping("/save")
+     * 
+     * @ResponseStatus(HttpStatus.CREATED)
+     * public Usuario guardar(@RequestBody Usuario usuario ){
+     * return usuarioService.save(usuario);
+     * }
+     */
     @PostMapping("/save")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Usuario guardar(@RequestBody Usuario usuario ){
-        return usuarioService.save(usuario);
-    }
- */
-    @PostMapping("/save")
-    public ResponseEntity<?> guardar(@RequestBody Usuario usuario ){
+    public ResponseEntity<?> guardar(@RequestBody Usuario usuario) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.save(usuario));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> editar(@RequestBody Usuario usuario,@PathVariable Long id ){
-        Optional<Usuario> usuarioOptional =  usuarioService.findById(id);
+    public ResponseEntity<?> editar(@RequestBody Usuario usuario, @PathVariable Long id) {
+        Optional<Usuario> usuarioOptional = usuarioService.findById(id);
 
-        if(usuarioOptional.isPresent()){
+        if (usuarioOptional.isPresent()) {
             Usuario usuariodb = usuarioOptional.get();
             usuariodb.setName(usuario.getName());
             usuariodb.setEmail(usuario.getEmail());
@@ -65,14 +66,13 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable Long id){
-       Optional<Usuario> usuarioOptional = usuarioService.findById(id);
-       if(usuarioOptional.isPresent()){
-        usuarioService.deleteById(id);
-        return ResponseEntity.noContent().build();
-       }
-       return ResponseEntity.notFound().build();
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        Optional<Usuario> usuarioOptional = usuarioService.findById(id);
+        if (usuarioOptional.isPresent()) {
+            usuarioService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
-
 
 }
