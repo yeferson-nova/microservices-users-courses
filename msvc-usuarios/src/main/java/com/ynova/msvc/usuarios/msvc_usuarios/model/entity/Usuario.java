@@ -1,14 +1,15 @@
 package com.ynova.msvc.usuarios.msvc_usuarios.model.entity;
 
-
 import org.hibernate.validator.constraints.UniqueElements;
-import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,17 +25,16 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Nonnull
+    @NotEmpty
     private String name;
 
-    @Nonnull
+    @NotEmpty
     @UniqueElements
     @Column(unique = true)
+    @Email
     private String email;
 
-    @Nonnull
+    @NotBlank
     private String password;
-
-    
 
 }
