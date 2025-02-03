@@ -29,7 +29,6 @@ public class Usuario {
     private String name;
 
     @NotEmpty
-    @UniqueElements
     @Column(unique = true)
     @Email
     private String email;

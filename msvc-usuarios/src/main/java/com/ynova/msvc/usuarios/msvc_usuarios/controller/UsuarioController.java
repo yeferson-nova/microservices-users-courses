@@ -46,13 +46,16 @@ public class UsuarioController {
 
     @PostMapping("/save")
     public ResponseEntity<?> guardar(@Valid @RequestBody Usuario usuario, BindingResult result) {
-        if (usuarioService.findByEmail(usuario.getEmail()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Collections.singletonMap("error", "El email ya existe"));
-        }
+
         if (result.hasErrors()) {
             return validar(result);
         }
+
+        if (!usuario.getEmail().isEmpty() && usuarioService.existsByEmail(usuario.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Collections.singletonMap("error", "El email ya existe"));
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.save(usuario));
     }
 
@@ -66,7 +69,7 @@ public class UsuarioController {
         Optional<Usuario> usuarioOptional = usuarioService.findById(id);
         if (usuarioOptional.isPresent()) {
             Usuario usuariodb = usuarioOptional.get();
-            if (!usuario.getEmail().equalsIgnoreCase(usuariodb.getEmail())
+            if (!usuario.getEmail().isEmpty() && !usuario.getEmail().equalsIgnoreCase(usuariodb.getEmail())
                     && usuarioService.findByEmail(usuario.getEmail()).isPresent()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Collections.singletonMap("error", "El email ya existe"));
